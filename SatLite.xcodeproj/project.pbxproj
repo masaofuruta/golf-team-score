@@ -1,0 +1,424 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CCCCCCCCCCCCCCCCCCCC0001 /* SatLiteApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBBBBBBBBBBBBBBBBBB0001 /* SatLiteApp.swift */; };
+		CCCCCCCCCCCCCCCCCCCC0002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBBBBBBBBBBBBBBBBBB0002 /* ContentView.swift */; };
+		CCCCCCCCCCCCCCCCCCCC0003 /* SatelliteModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBBBBBBBBBBBBBBBBBB0003 /* SatelliteModels.swift */; };
+		CCCCCCCCCCCCCCCCCCCC0004 /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBBBBBBBBBBBBBBBBBB0004 /* DataSource.swift */; };
+		CCCCCCCCCCCCCCCCCCCC0005 /* TLEParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBBBBBBBBBBBBBBBBBB0005 /* TLEParser.swift */; };
+		CCCCCCCCCCCCCCCCCCCC0006 /* SGP4.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBBBBBBBBBBBBBBBBBB0006 /* SGP4.swift */; };
+		CCCCCCCCCCCCCCCCCCCC0007 /* Coordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBBBBBBBBBBBBBBBBBB0007 /* Coordinates.swift */; };
+		CCCCCCCCCCCCCCCCCCCC0008 /* DataSourceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBBBBBBBBBBBBBBBBBB0008 /* DataSourceStore.swift */; };
+		CCCCCCCCCCCCCCCCCCCC0009 /* TLELoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBBBBBBBBBBBBBBBBBB0009 /* TLELoader.swift */; };
+		CCCCCCCCCCCCCCCCCCCC000A /* SatelliteEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBBBBBBBBBBBBBBBBBB000A /* SatelliteEngine.swift */; };
+		CCCCCCCCCCCCCCCCCCCC000B /* ColorUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBBBBBBBBBBBBBBBBBB000B /* ColorUtils.swift */; };
+		CCCCCCCCCCCCCCCCCCCC000C /* EarthTexture.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBBBBBBBBBBBBBBBBBB000C /* EarthTexture.swift */; };
+		CCCCCCCCCCCCCCCCCCCC000D /* EarthSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBBBBBBBBBBBBBBBBBB000D /* EarthSceneView.swift */; };
+		CCCCCCCCCCCCCCCCCCCC000E /* StarfieldTexture.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBBBBBBBBBBBBBBBBBB000E /* StarfieldTexture.swift */; };
+		CCCCCCCCCCCCCCCCCCCC000F /* DataSourceManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBBBBBBBBBBBBBBBBBB000F /* DataSourceManagerView.swift */; };
+		CCCCCCCCCCCCCCCCCCCC0010 /* SatelliteListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBBBBBBBBBBBBBBBBBB0010 /* SatelliteListView.swift */; };
+		CCCCCCCCCCCCCCCCCCCC0011 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBBBBBBBBBBBBBBBBBBB0011 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		BBBBBBBBBBBBBBBBBBBB0001 /* SatLiteApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SatLiteApp.swift; sourceTree = "<group>"; };
+		BBBBBBBBBBBBBBBBBBBB0002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		BBBBBBBBBBBBBBBBBBBB0003 /* SatelliteModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SatelliteModels.swift; sourceTree = "<group>"; };
+		BBBBBBBBBBBBBBBBBBBB0004 /* DataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
+		BBBBBBBBBBBBBBBBBBBB0005 /* TLEParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLEParser.swift; sourceTree = "<group>"; };
+		BBBBBBBBBBBBBBBBBBBB0006 /* SGP4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SGP4.swift; sourceTree = "<group>"; };
+		BBBBBBBBBBBBBBBBBBBB0007 /* Coordinates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinates.swift; sourceTree = "<group>"; };
+		BBBBBBBBBBBBBBBBBBBB0008 /* DataSourceStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceStore.swift; sourceTree = "<group>"; };
+		BBBBBBBBBBBBBBBBBBBB0009 /* TLELoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLELoader.swift; sourceTree = "<group>"; };
+		BBBBBBBBBBBBBBBBBBBB000A /* SatelliteEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SatelliteEngine.swift; sourceTree = "<group>"; };
+		BBBBBBBBBBBBBBBBBBBB000B /* ColorUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorUtils.swift; sourceTree = "<group>"; };
+		BBBBBBBBBBBBBBBBBBBB000C /* EarthTexture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarthTexture.swift; sourceTree = "<group>"; };
+		BBBBBBBBBBBBBBBBBBBB000D /* EarthSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarthSceneView.swift; sourceTree = "<group>"; };
+		BBBBBBBBBBBBBBBBBBBB000E /* StarfieldTexture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarfieldTexture.swift; sourceTree = "<group>"; };
+		BBBBBBBBBBBBBBBBBBBB000F /* DataSourceManagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceManagerView.swift; sourceTree = "<group>"; };
+		BBBBBBBBBBBBBBBBBBBB0010 /* SatelliteListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SatelliteListView.swift; sourceTree = "<group>"; };
+		BBBBBBBBBBBBBBBBBBBB0011 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BBBBBBBBBBBBBBBBBBBB0012 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BBBBBBBBBBBBBBBBBBBB00FF /* SatLite.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SatLite.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		AAAAAAAAAAAAAAAAAAAA000E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		AAAAAAAAAAAAAAAAAAAA0002 = {
+			isa = PBXGroup;
+			children = (
+				AAAAAAAAAAAAAAAAAAAA0004 /* SatLite */,
+				AAAAAAAAAAAAAAAAAAAA0003 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		AAAAAAAAAAAAAAAAAAAA0003 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BBBBBBBBBBBBBBBBBBBB00FF /* SatLite.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AAAAAAAAAAAAAAAAAAAA0004 /* SatLite */ = {
+			isa = PBXGroup;
+			children = (
+				BBBBBBBBBBBBBBBBBBBB0001 /* SatLiteApp.swift */,
+				BBBBBBBBBBBBBBBBBBBB0002 /* ContentView.swift */,
+				AAAAAAAAAAAAAAAAAAAA0005 /* Models */,
+				AAAAAAAAAAAAAAAAAAAA0006 /* Propagation */,
+				AAAAAAAAAAAAAAAAAAAA0007 /* Services */,
+				AAAAAAAAAAAAAAAAAAAA0008 /* Views */,
+				AAAAAAAAAAAAAAAAAAAA0009 /* Resources */,
+			);
+			path = SatLite;
+			sourceTree = "<group>";
+		};
+		AAAAAAAAAAAAAAAAAAAA0005 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BBBBBBBBBBBBBBBBBBBB0003 /* SatelliteModels.swift */,
+				BBBBBBBBBBBBBBBBBBBB0004 /* DataSource.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		AAAAAAAAAAAAAAAAAAAA0006 /* Propagation */ = {
+			isa = PBXGroup;
+			children = (
+				BBBBBBBBBBBBBBBBBBBB0005 /* TLEParser.swift */,
+				BBBBBBBBBBBBBBBBBBBB0006 /* SGP4.swift */,
+				BBBBBBBBBBBBBBBBBBBB0007 /* Coordinates.swift */,
+			);
+			path = Propagation;
+			sourceTree = "<group>";
+		};
+		AAAAAAAAAAAAAAAAAAAA0007 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				BBBBBBBBBBBBBBBBBBBB0008 /* DataSourceStore.swift */,
+				BBBBBBBBBBBBBBBBBBBB0009 /* TLELoader.swift */,
+				BBBBBBBBBBBBBBBBBBBB000A /* SatelliteEngine.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		AAAAAAAAAAAAAAAAAAAA0008 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				BBBBBBBBBBBBBBBBBBBB000B /* ColorUtils.swift */,
+				BBBBBBBBBBBBBBBBBBBB000C /* EarthTexture.swift */,
+				BBBBBBBBBBBBBBBBBBBB000D /* EarthSceneView.swift */,
+				BBBBBBBBBBBBBBBBBBBB000E /* StarfieldTexture.swift */,
+				BBBBBBBBBBBBBBBBBBBB000F /* DataSourceManagerView.swift */,
+				BBBBBBBBBBBBBBBBBBBB0010 /* SatelliteListView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		AAAAAAAAAAAAAAAAAAAA0009 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				BBBBBBBBBBBBBBBBBBBB0011 /* Assets.xcassets */,
+				BBBBBBBBBBBBBBBBBBBB0012 /* Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		AAAAAAAAAAAAAAAAAAAA000A /* SatLite */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AAAAAAAAAAAAAAAAAAAA0010 /* Build configuration list for PBXNativeTarget "SatLite" */;
+			buildPhases = (
+				AAAAAAAAAAAAAAAAAAAA000C /* Sources */,
+				AAAAAAAAAAAAAAAAAAAA000E /* Frameworks */,
+				AAAAAAAAAAAAAAAAAAAA000D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SatLite;
+			productName = SatLite;
+			productReference = BBBBBBBBBBBBBBBBBBBB00FF /* SatLite.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AAAAAAAAAAAAAAAAAAAA0001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					AAAAAAAAAAAAAAAAAAAA000A = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = AAAAAAAAAAAAAAAAAAAA000F /* Build configuration list for PBXProject "SatLite" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = AAAAAAAAAAAAAAAAAAAA0002;
+			productRefGroup = AAAAAAAAAAAAAAAAAAAA0003 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AAAAAAAAAAAAAAAAAAAA000A /* SatLite */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		AAAAAAAAAAAAAAAAAAAA000D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CCCCCCCCCCCCCCCCCCCC0011 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AAAAAAAAAAAAAAAAAAAA000C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CCCCCCCCCCCCCCCCCCCC0001 /* SatLiteApp.swift in Sources */,
+				CCCCCCCCCCCCCCCCCCCC0002 /* ContentView.swift in Sources */,
+				CCCCCCCCCCCCCCCCCCCC0003 /* SatelliteModels.swift in Sources */,
+				CCCCCCCCCCCCCCCCCCCC0004 /* DataSource.swift in Sources */,
+				CCCCCCCCCCCCCCCCCCCC0005 /* TLEParser.swift in Sources */,
+				CCCCCCCCCCCCCCCCCCCC0006 /* SGP4.swift in Sources */,
+				CCCCCCCCCCCCCCCCCCCC0007 /* Coordinates.swift in Sources */,
+				CCCCCCCCCCCCCCCCCCCC0008 /* DataSourceStore.swift in Sources */,
+				CCCCCCCCCCCCCCCCCCCC0009 /* TLELoader.swift in Sources */,
+				CCCCCCCCCCCCCCCCCCCC000A /* SatelliteEngine.swift in Sources */,
+				CCCCCCCCCCCCCCCCCCCC000B /* ColorUtils.swift in Sources */,
+				CCCCCCCCCCCCCCCCCCCC000C /* EarthTexture.swift in Sources */,
+				CCCCCCCCCCCCCCCCCCCC000D /* EarthSceneView.swift in Sources */,
+				CCCCCCCCCCCCCCCCCCCC000E /* StarfieldTexture.swift in Sources */,
+				CCCCCCCCCCCCCCCCCCCC000F /* DataSourceManagerView.swift in Sources */,
+				CCCCCCCCCCCCCCCCCCCC0010 /* SatelliteListView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		AAAAAAAAAAAAAAAAAAAA0011 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		AAAAAAAAAAAAAAAAAAAA0012 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		AAAAAAAAAAAAAAAAAAAA0013 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SatLite/Resources/Info.plist;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleLightContent;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.satlite.SatLite;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		AAAAAAAAAAAAAAAAAAAA0014 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SatLite/Resources/Info.plist;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleLightContent;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.satlite.SatLite;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		AAAAAAAAAAAAAAAAAAAA000F /* Build configuration list for PBXProject "SatLite" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AAAAAAAAAAAAAAAAAAAA0011 /* Debug */,
+				AAAAAAAAAAAAAAAAAAAA0012 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AAAAAAAAAAAAAAAAAAAA0010 /* Build configuration list for PBXNativeTarget "SatLite" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AAAAAAAAAAAAAAAAAAAA0013 /* Debug */,
+				AAAAAAAAAAAAAAAAAAAA0014 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = AAAAAAAAAAAAAAAAAAAA0001 /* Project object */;
+}
