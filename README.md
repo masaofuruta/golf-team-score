@@ -32,7 +32,7 @@
 
 このリポジトリを GitHub Pages で公開すると、次の URL でブラウザから直接利用できます。
 
-**https://masaofuruta.github.io/satlite/**
+**https://masaofuruta.github.io/golf-team-score/**
 
 ### 公開手順（初回のみ）
 
