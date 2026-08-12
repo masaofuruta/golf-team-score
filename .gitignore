@@ -1,18 +1,10 @@
-# Xcode
-build/
-DerivedData/
-*.xcuserstate
-xcuserdata/
-*.xcscmblueprint
-*.moved-aside
-
-# Swift Package Manager
-.build/
-.swiftpm/
-
 # macOS
 .DS_Store
 
-# CocoaPods / Carthage (未使用だが念のため)
-Pods/
-Carthage/Build/
+# エディタ
+.vscode/
+.idea/
+
+# ログ・一時ファイル
+*.log
+node_modules/
