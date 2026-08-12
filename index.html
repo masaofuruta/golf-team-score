@@ -36,7 +36,12 @@
         <h2>チーム・メンバー</h2>
         <button class="btn primary" id="addTeamBtn">＋ チームを追加</button>
       </div>
-      <p class="hint">各プレイヤーの「グロス（合計打数）」と「ハンディ」を入力してください。ネット＝グロス−ハンディで自動計算します。</p>
+      <div class="net-mode" id="netMode">
+        <span class="net-mode-label">ネットの入力方法：</span>
+        <label><input type="radio" name="netModeRadio" value="handicap" /> ハンディから計算</label>
+        <label><input type="radio" name="netModeRadio" value="direct" /> ネットを直接入力</label>
+      </div>
+      <p class="hint" id="teamsHint"></p>
       <div id="teamsContainer"></div>
     </section>
 

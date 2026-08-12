@@ -78,6 +78,28 @@ main {
   margin: 8px 0 12px;
 }
 
+.net-mode {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 14px;
+  margin: 10px 0 4px;
+  padding: 10px 12px;
+  background: var(--green-light);
+  border-radius: 8px;
+  font-size: 0.85rem;
+}
+.net-mode-label {
+  font-weight: 600;
+  color: var(--green-dark);
+}
+.net-mode label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
 .event-fields {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));

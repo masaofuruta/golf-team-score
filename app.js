@@ -21,7 +21,8 @@
     eventName: "",
     eventDate: "",
     courseName: "",
-    teams: [], // { id, name, players: [ { id, name, handicap, gross } ] }
+    netMode: "handicap", // "handicap": ネット=グロス−ハンディ / "direct": ネットを直接入力
+    teams: [], // { id, name, players: [ { id, name, handicap, gross, netManual } ] }
   };
 
   var seq = 1;
@@ -60,6 +61,7 @@
       eventName: str(data.eventName),
       eventDate: str(data.eventDate),
       courseName: str(data.courseName),
+      netMode: data.netMode === "direct" ? "direct" : "handicap",
       teams: [],
     };
     (data.teams || []).forEach(function (t) {
@@ -74,6 +76,7 @@
           name: str(p && p.name),
           handicap: numOrNull(p && p.handicap),
           gross: numOrNull(p && p.gross),
+          netManual: numOrNull(p && p.netManual),
         });
       });
       s.teams.push(team);
@@ -90,6 +93,16 @@
     return isFinite(n) ? n : null;
   }
 
+  // プレイヤーのネット値を現在のモードに応じて返す（未確定なら null）
+  function playerNet(p) {
+    if (state.netMode === "direct") {
+      return p.netManual; // 直接入力（未入力は null）
+    }
+    if (p.gross == null) return null;
+    var hc = p.handicap == null ? 0 : p.handicap;
+    return p.gross - hc;
+  }
+
   // ---- 集計ロジック ----------------------------------------------------
   // 各チームの合計と、グロス/ネット/総合の順位を計算して返す
   function computeStandings() {
@@ -98,11 +111,11 @@
       var netTotal = 0;
       var counted = 0;
       team.players.forEach(function (p) {
-        if (p.gross == null) return; // グロス未入力は集計対象外
-        var hc = p.handicap == null ? 0 : p.handicap;
-        grossTotal += p.gross;
-        netTotal += p.gross - hc;
-        counted += 1;
+        if (p.gross != null) grossTotal += p.gross;
+        var net = playerNet(p);
+        if (net != null) netTotal += net;
+        // グロスまたはネットのいずれかが入力されていれば集計対象
+        if (p.gross != null || net != null) counted += 1;
       });
       return {
         team: team,
@@ -186,15 +199,7 @@
     });
 
     var totals = el("span", "team-totals");
-    var grossT = 0,
-      netT = 0;
-    team.players.forEach(function (p) {
-      if (p.gross == null) return;
-      var hc = p.handicap == null ? 0 : p.handicap;
-      grossT += p.gross;
-      netT += p.gross - hc;
-    });
-    totals.textContent = "グロス " + grossT + " / ネット " + netT;
+    totals.textContent = teamTotalsText(team);
 
     var delTeam = document.createElement("button");
     delTeam.className = "btn danger small";
@@ -218,12 +223,14 @@
     var scroll = el("div", "table-scroll");
     var table = document.createElement("table");
     table.className = "players-table";
+    var middleHeader =
+      state.netMode === "direct"
+        ? "<th>グロス</th><th>ネット</th>"
+        : "<th>ハンディ</th><th>グロス</th><th>ネット</th>";
     table.innerHTML =
       "<thead><tr>" +
       "<th class='name-cell'>プレイヤー</th>" +
-      "<th>ハンディ</th>" +
-      "<th>グロス</th>" +
-      "<th>ネット</th>" +
+      middleHeader +
       "<th></th>" +
       "</tr></thead>";
     var tbody = document.createElement("tbody");
@@ -241,7 +248,7 @@
     addP.className = "btn small";
     addP.textContent = "＋ プレイヤーを追加";
     addP.addEventListener("click", function () {
-      team.players.push({ id: nextId(), name: "", handicap: null, gross: null });
+      team.players.push({ id: nextId(), name: "", handicap: null, gross: null, netManual: null });
       save();
       renderAll();
     });
@@ -266,18 +273,9 @@
       save();
     });
     nameTd.appendChild(name);
+    tr.appendChild(nameTd);
 
-    // ハンディ
-    var hcTd = document.createElement("td");
-    var hc = numberInput(player.handicap);
-    hc.step = "any";
-    hc.addEventListener("input", function () {
-      player.handicap = numOrNull(hc.value);
-      onScoreChange(team, tr, player);
-    });
-    hcTd.appendChild(hc);
-
-    // グロス
+    // グロス（両モード共通）
     var grossTd = document.createElement("td");
     var gross = numberInput(player.gross);
     gross.min = "0";
@@ -287,9 +285,35 @@
     });
     grossTd.appendChild(gross);
 
-    // ネット（自動計算）
-    var netTd = el("td", "net-cell");
-    netTd.textContent = netText(player);
+    if (state.netMode === "direct") {
+      // グロス → ネット直接入力
+      tr.appendChild(grossTd);
+      var netInTd = document.createElement("td");
+      var netIn = numberInput(player.netManual);
+      netIn.min = "0";
+      netIn.addEventListener("input", function () {
+        player.netManual = numOrNull(netIn.value);
+        onScoreChange(team, tr, player);
+      });
+      netInTd.appendChild(netIn);
+      tr.appendChild(netInTd);
+    } else {
+      // ハンディ → グロス → ネット（自動計算表示）
+      var hcTd = document.createElement("td");
+      var hc = numberInput(player.handicap);
+      hc.step = "any";
+      hc.addEventListener("input", function () {
+        player.handicap = numOrNull(hc.value);
+        onScoreChange(team, tr, player);
+      });
+      hcTd.appendChild(hc);
+      tr.appendChild(hcTd);
+      tr.appendChild(grossTd);
+
+      var netTd = el("td", "net-cell");
+      netTd.textContent = netText(player);
+      tr.appendChild(netTd);
+    }
 
     // 削除
     var delTd = document.createElement("td");
@@ -305,11 +329,6 @@
       renderAll();
     });
     delTd.appendChild(del);
-
-    tr.appendChild(nameTd);
-    tr.appendChild(hcTd);
-    tr.appendChild(grossTd);
-    tr.appendChild(netTd);
     tr.appendChild(delTd);
     return tr;
   }
@@ -323,29 +342,30 @@
     renderResults();
   }
 
-  function updateTeamTotals(team) {
-    // 該当チームのヘッダー合計を更新
+  function teamTotalsText(team) {
     var grossT = 0,
       netT = 0;
     team.players.forEach(function (p) {
-      if (p.gross == null) return;
-      var hc = p.handicap == null ? 0 : p.handicap;
-      grossT += p.gross;
-      netT += p.gross - hc;
+      if (p.gross != null) grossT += p.gross;
+      var net = playerNet(p);
+      if (net != null) netT += net;
     });
+    return "グロス " + grossT + " / ネット " + netT;
+  }
+
+  function updateTeamTotals(team) {
     // 全チーム再描画は避け、対応する totals 要素を探して更新
     var heads = document.querySelectorAll(".team");
     var idx = state.teams.indexOf(team);
     if (idx >= 0 && heads[idx]) {
       var totals = heads[idx].querySelector(".team-totals");
-      if (totals) totals.textContent = "グロス " + grossT + " / ネット " + netT;
+      if (totals) totals.textContent = teamTotalsText(team);
     }
   }
 
   function netText(player) {
-    if (player.gross == null) return "—";
-    var hc = player.handicap == null ? 0 : player.handicap;
-    return String(player.gross - hc);
+    var net = playerNet(player);
+    return net == null ? "—" : String(net);
   }
 
   // ---- 描画: 結果 ------------------------------------------------------
@@ -415,8 +435,23 @@
     document.getElementById("courseName").value = state.courseName;
   }
 
+  function renderNetMode() {
+    var radios = document.getElementsByName("netModeRadio");
+    for (var i = 0; i < radios.length; i++) {
+      radios[i].checked = radios[i].value === state.netMode;
+    }
+    var hint = document.getElementById("teamsHint");
+    if (hint) {
+      hint.textContent =
+        state.netMode === "direct"
+          ? "各プレイヤーの「グロス（合計打数）」と「ネット」を直接入力してください。"
+          : "各プレイヤーの「ハンディ」と「グロス（合計打数）」を入力してください。ネット＝グロス−ハンディで自動計算します。";
+    }
+  }
+
   function renderAll() {
     renderEventFields();
+    renderNetMode();
     renderTeams();
     renderResults();
   }
@@ -461,11 +496,21 @@
       save();
     });
 
+    var netRadios = document.getElementsByName("netModeRadio");
+    for (var i = 0; i < netRadios.length; i++) {
+      netRadios[i].addEventListener("change", function (e) {
+        if (!e.target.checked) return;
+        state.netMode = e.target.value === "direct" ? "direct" : "handicap";
+        save();
+        renderAll();
+      });
+    }
+
     document.getElementById("addTeamBtn").addEventListener("click", function () {
       state.teams.push({
         id: nextId(),
         name: "チーム" + (state.teams.length + 1),
-        players: [{ id: nextId(), name: "", handicap: null, gross: null }],
+        players: [{ id: nextId(), name: "", handicap: null, gross: null, netManual: null }],
       });
       save();
       renderAll();
@@ -480,7 +525,7 @@
 
     document.getElementById("resetBtn").addEventListener("click", function () {
       if (!confirm("すべてのデータを消去します。よろしいですか？")) return;
-      state = { eventName: "", eventDate: "", courseName: "", teams: [] };
+      state = { eventName: "", eventDate: "", courseName: "", netMode: state.netMode, teams: [] };
       save();
       renderAll();
     });
@@ -526,37 +571,29 @@
   }
 
   function sampleData() {
+    function pl(name, hc, gross) {
+      return { id: nextId(), name: name, handicap: hc, gross: gross, netManual: gross - hc };
+    }
     return {
       eventName: "サンプルコンペ",
       eventDate: "",
       courseName: "サンプルカントリークラブ",
+      netMode: state.netMode,
       teams: [
         {
           id: nextId(),
           name: "レッドチーム",
-          players: [
-            { id: nextId(), name: "田中", handicap: 12, gross: 92 },
-            { id: nextId(), name: "鈴木", handicap: 20, gross: 105 },
-            { id: nextId(), name: "佐藤", handicap: 8, gross: 85 },
-          ],
+          players: [pl("田中", 12, 92), pl("鈴木", 20, 105), pl("佐藤", 8, 85)],
         },
         {
           id: nextId(),
           name: "ブルーチーム",
-          players: [
-            { id: nextId(), name: "山本", handicap: 15, gross: 98 },
-            { id: nextId(), name: "中村", handicap: 6, gross: 82 },
-            { id: nextId(), name: "小林", handicap: 24, gross: 110 },
-          ],
+          players: [pl("山本", 15, 98), pl("中村", 6, 82), pl("小林", 24, 110)],
         },
         {
           id: nextId(),
           name: "グリーンチーム",
-          players: [
-            { id: nextId(), name: "加藤", handicap: 10, gross: 90 },
-            { id: nextId(), name: "吉田", handicap: 18, gross: 101 },
-            { id: nextId(), name: "山田", handicap: 14, gross: 95 },
-          ],
+          players: [pl("加藤", 10, 90), pl("吉田", 18, 101), pl("山田", 14, 95)],
         },
       ],
     };
