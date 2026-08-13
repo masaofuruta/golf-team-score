@@ -236,6 +236,15 @@ input:focus {
 }
 
 /* ===== Results ===== */
+.individual {
+  margin-top: 18px;
+}
+.sub-heading {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+  color: var(--green-dark);
+}
+
 .results-table {
   width: 100%;
   border-collapse: collapse;
