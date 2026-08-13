@@ -104,44 +104,76 @@
   }
 
   // ---- 集計ロジック ----------------------------------------------------
-  // 各チームの合計と、グロス/ネット/総合の順位を計算して返す
+  // 全プレイヤーを1つの母集団としてグロス/ネットの「個人順位」を付け、
+  // チームごとに所属プレイヤーの順位を合計する。
+  // 合算（グロス順位合計＋ネット順位合計）が最小のチームが総合優勝。
   function computeStandings() {
-    var rows = state.teams.map(function (team) {
-      var grossTotal = 0;
-      var netTotal = 0;
-      var counted = 0;
+    // 全チームのプレイヤーを1つのリストにまとめる
+    var entries = [];
+    state.teams.forEach(function (team) {
       team.players.forEach(function (p) {
-        if (p.gross != null) grossTotal += p.gross;
-        var net = playerNet(p);
-        if (net != null) netTotal += net;
-        // グロスまたはネットのいずれかが入力されていれば集計対象
-        if (p.gross != null || net != null) counted += 1;
+        entries.push({
+          team: team,
+          gross: p.gross,
+          net: playerNet(p),
+          grossRank: null,
+          netRank: null,
+        });
+      });
+    });
+
+    // 個人のグロス順位（グロス入力者のみ・少ない順）
+    assignRank(
+      entries.filter(function (e) {
+        return e.gross != null;
+      }),
+      "gross",
+      "grossRank"
+    );
+    // 個人のネット順位（ネット確定者のみ・少ない順）
+    assignRank(
+      entries.filter(function (e) {
+        return e.net != null;
+      }),
+      "net",
+      "netRank"
+    );
+
+    // チームごとに個人順位を合計
+    var rows = state.teams.map(function (team) {
+      var grossRankSum = 0,
+        netRankSum = 0,
+        rankedCount = 0;
+      entries.forEach(function (e) {
+        if (e.team !== team) return;
+        if (e.grossRank != null) {
+          grossRankSum += e.grossRank;
+          rankedCount += 1;
+        }
+        if (e.netRank != null) {
+          netRankSum += e.netRank;
+          rankedCount += 1;
+        }
       });
       return {
         team: team,
-        counted: counted,
-        grossTotal: grossTotal,
-        netTotal: netTotal,
+        grossRankSum: grossRankSum,
+        netRankSum: netRankSum,
+        combined: grossRankSum + netRankSum,
+        ranked: rankedCount > 0,
       };
     });
 
-    // グロスの入力が1人でもあるチームだけをランキング対象にする
+    // 順位が付いたプレイヤーが1人でもいるチームだけを対象にする
     var ranked = rows.filter(function (r) {
-      return r.counted > 0;
+      return r.ranked;
     });
 
-    assignRank(ranked, "grossTotal", "grossRank");
-    assignRank(ranked, "netTotal", "netRank");
-
-    ranked.forEach(function (r) {
-      r.combined = r.grossRank + r.netRank;
-    });
-
-    // 総合順位: 合算(combined)の昇順、同点はネット合計→グロス合計で決定
+    // 総合順位: 合算(combined)の昇順、同点はネット順位合計→グロス順位合計で決定
     var sorted = ranked.slice().sort(function (a, b) {
       if (a.combined !== b.combined) return a.combined - b.combined;
-      if (a.netTotal !== b.netTotal) return a.netTotal - b.netTotal;
-      return a.grossTotal - b.grossTotal;
+      if (a.netRankSum !== b.netRankSum) return a.netRankSum - b.netRankSum;
+      return a.grossRankSum - b.grossRankSum;
     });
     for (var i = 0; i < sorted.length; i++) {
       sorted[i].overallRank = i + 1;
@@ -390,10 +422,8 @@
       "<thead><tr>" +
       "<th>総合</th>" +
       "<th>チーム</th>" +
-      "<th>グロス合計</th>" +
-      "<th>グロス順位</th>" +
-      "<th>ネット合計</th>" +
-      "<th>ネット順位</th>" +
+      "<th>グロス順位合計</th>" +
+      "<th>ネット順位合計</th>" +
       "<th>合算</th>" +
       "</tr></thead>";
     var tbody = document.createElement("tbody");
@@ -408,10 +438,8 @@
       tr.innerHTML =
         "<td>" + r.overallRank + "</td>" +
         "<td class='team-cell'>" + escapeHtml(name) + champBadge + "</td>" +
-        "<td>" + r.grossTotal + "</td>" +
-        "<td>" + r.grossRank + "</td>" +
-        "<td>" + r.netTotal + "</td>" +
-        "<td>" + r.netRank + "</td>" +
+        "<td>" + r.grossRankSum + "</td>" +
+        "<td>" + r.netRankSum + "</td>" +
         "<td class='combined-cell'>" + r.combined + "</td>";
       tbody.appendChild(tr);
     });
