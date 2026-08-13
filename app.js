@@ -114,6 +114,7 @@
       team.players.forEach(function (p) {
         entries.push({
           team: team,
+          name: p.name,
           gross: p.gross,
           net: playerNet(p),
           grossRank: null,
@@ -179,7 +180,7 @@
       sorted[i].overallRank = i + 1;
     }
 
-    return { sorted: sorted, unrankedCount: rows.length - ranked.length };
+    return { sorted: sorted, unrankedCount: rows.length - ranked.length, entries: entries };
   }
 
   // 標準的な競技順位付け（同値は同順位・次は飛ばす: 1,2,2,4 …）
@@ -454,6 +455,59 @@
         "※ グロス未入力のチームが " + result.unrankedCount + " チームあり、集計から除外しています。";
       container.appendChild(note);
     }
+
+    // 個人順位の内訳
+    container.appendChild(buildIndividualTable(result.entries));
+  }
+
+  // 各プレイヤーのグロス順位・ネット順位を一覧表示する
+  function buildIndividualTable(entries) {
+    var section = el("div", "individual");
+
+    var heading = el("h3", "sub-heading");
+    heading.textContent = "個人順位";
+    section.appendChild(heading);
+
+    // グロス順位の昇順（未入力は末尾）、次いでネット順位で並べる
+    var rankOr = function (v) {
+      return v == null ? Infinity : v;
+    };
+    var sorted = entries.slice().sort(function (a, b) {
+      var d = rankOr(a.grossRank) - rankOr(b.grossRank);
+      if (d !== 0) return d;
+      return rankOr(a.netRank) - rankOr(b.netRank);
+    });
+
+    var scroll = el("div", "table-scroll");
+    var table = document.createElement("table");
+    table.className = "results-table";
+    table.innerHTML =
+      "<thead><tr>" +
+      "<th>プレイヤー</th>" +
+      "<th>チーム</th>" +
+      "<th>グロス</th>" +
+      "<th>グロス順位</th>" +
+      "<th>ネット</th>" +
+      "<th>ネット順位</th>" +
+      "</tr></thead>";
+    var tbody = document.createElement("tbody");
+
+    sorted.forEach(function (e) {
+      var tr = document.createElement("tr");
+      tr.innerHTML =
+        "<td class='team-cell'>" + escapeHtml(e.name || "無名") + "</td>" +
+        "<td>" + escapeHtml(e.team.name || "無名チーム") + "</td>" +
+        "<td>" + (e.gross == null ? "—" : e.gross) + "</td>" +
+        "<td>" + (e.grossRank == null ? "—" : e.grossRank) + "</td>" +
+        "<td>" + (e.net == null ? "—" : e.net) + "</td>" +
+        "<td>" + (e.netRank == null ? "—" : e.netRank) + "</td>";
+      tbody.appendChild(tr);
+    });
+
+    table.appendChild(tbody);
+    scroll.appendChild(table);
+    section.appendChild(scroll);
+    return section;
   }
 
   // ---- 描画: 大会情報 --------------------------------------------------
