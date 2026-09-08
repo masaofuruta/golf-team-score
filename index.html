@@ -14,6 +14,12 @@
   </header>
 
   <main>
+    <!-- 共有ビュー時のバナー -->
+    <div class="shared-banner" id="sharedBanner" hidden>
+      <span>👀 共有された結果を表示中です（閲覧用。この画面での変更は保存されません）。</span>
+      <button class="btn small" id="editHereBtn">この内容を編集する（自分の端末に保存）</button>
+    </div>
+
     <!-- 大会情報 -->
     <section class="card">
       <h2>大会情報</h2>
@@ -61,11 +67,20 @@
     <section class="card tools">
       <h2>ツール</h2>
       <div class="tool-buttons">
+        <button class="btn primary" id="shareBtn">🔗 共有リンクを作成</button>
         <button class="btn" id="sampleBtn">サンプルデータを入れる</button>
         <button class="btn" id="exportBtn">JSON書き出し</button>
         <button class="btn" id="importBtn">JSON読み込み</button>
         <button class="btn danger" id="resetBtn">全消去</button>
         <input type="file" id="importFile" accept="application/json" hidden />
+      </div>
+      <div class="share-output" id="shareOutput" hidden>
+        <p class="share-msg" id="shareMsg"></p>
+        <div class="share-row">
+          <input type="text" id="shareUrl" readonly />
+          <button class="btn small" id="copyShareBtn">コピー</button>
+        </div>
+        <p class="hint">このリンクを開くと、今の順位結果が表示されます（作成時点のスナップショット）。スコアを更新したら、リンクを作り直して共有してください。</p>
       </div>
       <p class="hint">データはこの端末のブラウザ内（localStorage）に自動保存されます。通信は行いません。</p>
     </section>

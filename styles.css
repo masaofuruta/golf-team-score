@@ -300,6 +300,47 @@ input:focus {
   flex-wrap: wrap;
   gap: 8px;
 }
+
+.share-output {
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--green-light);
+}
+.share-msg {
+  margin: 0 0 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--green-dark);
+}
+.share-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.share-row input {
+  flex: 1;
+  font-size: 0.8rem;
+}
+
+.shared-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #fff4d6;
+  border: 1px solid #f0d68a;
+  font-size: 0.85rem;
+  color: #6b5310;
+}
+.shared-banner span {
+  flex: 1;
+  min-width: 200px;
+}
 .app-footer {
   text-align: center;
   padding: 16px;
