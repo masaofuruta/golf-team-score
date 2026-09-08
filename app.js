@@ -30,8 +30,16 @@
     return "id" + seq++ + "_" + Math.floor(Math.random() * 1e6);
   }
 
+  // 共有リンクから開いた「閲覧用」モードか
+  var sharedView = false;
+
   // ---- 永続化 ----------------------------------------------------------
   function save() {
+    // 共有リンクの閲覧中は、相手の端末に保存しない
+    if (sharedView) {
+      setStatus("閲覧用のため保存していません");
+      return;
+    }
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       setStatus("自動保存済み " + new Date().toLocaleTimeString("ja-JP"));
@@ -599,6 +607,114 @@
     if (s) s.textContent = "自動保存: " + text;
   }
 
+  // ---- 共有リンク ------------------------------------------------------
+  // 共有に必要な最小データ（ID は不要）を取り出す
+  function shareableData() {
+    return {
+      eventName: state.eventName,
+      eventDate: state.eventDate,
+      courseName: state.courseName,
+      netMode: state.netMode,
+      teams: state.teams.map(function (t) {
+        return {
+          name: t.name,
+          players: t.players.map(function (p) {
+            return { name: p.name, handicap: p.handicap, gross: p.gross, netManual: p.netManual };
+          }),
+        };
+      }),
+    };
+  }
+
+  // UTF-8 対応の URL セーフな base64 エンコード/デコード
+  function encodePayload(obj) {
+    var bytes = new TextEncoder().encode(JSON.stringify(obj));
+    var bin = "";
+    for (var i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+    return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  }
+  function decodePayload(s) {
+    var b64 = s.replace(/-/g, "+").replace(/_/g, "/");
+    while (b64.length % 4) b64 += "=";
+    var bin = atob(b64);
+    var bytes = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return JSON.parse(new TextDecoder().decode(bytes));
+  }
+
+  function readSharedFromUrl() {
+    var h = location.hash || "";
+    var m = h.match(/[#&]view=([^&]+)/);
+    if (!m) return null;
+    try {
+      return decodePayload(m[1]);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function createShareLink() {
+    if (state.teams.length === 0) {
+      alert("共有するデータがありません。チームとスコアを入力してください。");
+      return;
+    }
+    var base = location.href.split("#")[0];
+    var url = base + "#view=" + encodePayload(shareableData());
+
+    var out = document.getElementById("shareOutput");
+    var input = document.getElementById("shareUrl");
+    input.value = url;
+    out.hidden = false;
+    input.focus();
+    input.select();
+
+    copyText(url).then(function (ok) {
+      setShareMsg(
+        ok
+          ? "リンクをコピーしました。メールやLINEなどで共有してください。"
+          : "下のリンクをコピーして共有してください。"
+      );
+    });
+  }
+
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).then(
+        function () {
+          return true;
+        },
+        function () {
+          return false;
+        }
+      );
+    }
+    return Promise.resolve(false);
+  }
+
+  function setShareMsg(text) {
+    var m = document.getElementById("shareMsg");
+    if (m) m.textContent = text;
+  }
+
+  function showSharedBanner() {
+    var b = document.getElementById("sharedBanner");
+    if (b) b.hidden = false;
+  }
+
+  // 閲覧用モードを終了し、この内容を自分の端末に保存して編集できるようにする
+  function exitSharedView() {
+    sharedView = false;
+    if (history.replaceState) {
+      history.replaceState(null, "", location.href.split("#")[0]);
+    } else {
+      location.hash = "";
+    }
+    var b = document.getElementById("sharedBanner");
+    if (b) b.hidden = true;
+    save();
+    setStatus("編集モードに切り替えました（自動保存を再開）");
+  }
+
   // ---- イベント配線 ----------------------------------------------------
   function wireUp() {
     document.getElementById("eventName").addEventListener("input", function (e) {
@@ -653,6 +769,19 @@
       document.getElementById("importFile").click();
     });
     document.getElementById("importFile").addEventListener("change", importJson);
+
+    document.getElementById("shareBtn").addEventListener("click", createShareLink);
+    document.getElementById("copyShareBtn").addEventListener("click", function () {
+      var input = document.getElementById("shareUrl");
+      input.focus();
+      input.select();
+      copyText(input.value).then(function (ok) {
+        setShareMsg(ok ? "リンクをコピーしました。" : "コピーできませんでした。手動で選択してコピーしてください。");
+      });
+    });
+
+    var editHere = document.getElementById("editHereBtn");
+    if (editHere) editHere.addEventListener("click", exitSharedView);
   }
 
   function exportJson() {
@@ -719,6 +848,18 @@
 
   // ---- 起動 ------------------------------------------------------------
   function init() {
+    var shared = readSharedFromUrl();
+    if (shared) {
+      // 共有リンクから開いた: 閲覧用として表示し、端末には保存しない
+      state = normalize(shared);
+      sharedView = true;
+      seq = Math.max(seq, state.teams.length * 50 + 100);
+      wireUp();
+      showSharedBanner();
+      renderAll();
+      setStatus("共有された結果を表示中（閲覧用）");
+      return;
+    }
     var had = load();
     wireUp();
     renderAll();
