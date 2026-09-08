@@ -178,14 +178,23 @@
       return r.ranked;
     });
 
-    // 総合順位: 合算(combined)の昇順、同点はネット順位合計→グロス順位合計で決定
+    // 総合順位: 合算(combined)の昇順。同点はネット順位合計が少ない方を上位とする。
+    // 合算・ネット順位合計がともに同じ場合のみ同順位（グロス順位合計は表示順の安定用）。
     var sorted = ranked.slice().sort(function (a, b) {
       if (a.combined !== b.combined) return a.combined - b.combined;
       if (a.netRankSum !== b.netRankSum) return a.netRankSum - b.netRankSum;
       return a.grossRankSum - b.grossRankSum;
     });
     for (var i = 0; i < sorted.length; i++) {
-      sorted[i].overallRank = i + 1;
+      if (
+        i > 0 &&
+        sorted[i].combined === sorted[i - 1].combined &&
+        sorted[i].netRankSum === sorted[i - 1].netRankSum
+      ) {
+        sorted[i].overallRank = sorted[i - 1].overallRank; // 合算もネットも同じ → 同順位
+      } else {
+        sorted[i].overallRank = i + 1;
+      }
     }
 
     return { sorted: sorted, unrankedCount: rows.length - ranked.length, entries: entries };
@@ -497,9 +506,15 @@
       return a.grossRank - b.grossRank;
     });
     for (var i = 0; i < rankable.length; i++) {
-      if (i > 0 && rankable[i].combined === rankable[i - 1].combined) {
+      if (
+        i > 0 &&
+        rankable[i].combined === rankable[i - 1].combined &&
+        rankable[i].netRank === rankable[i - 1].netRank
+      ) {
+        // 合算もネット順位も同じ → 同順位
         rankable[i].indivRank = rankable[i - 1].indivRank;
       } else {
+        // 合算が同点でもネット順位が上（小さい）方を上位にする
         rankable[i].indivRank = i + 1;
       }
     }
