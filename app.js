@@ -665,16 +665,35 @@
     var input = document.getElementById("shareUrl");
     input.value = url;
     out.hidden = false;
+    renderShareQr(url);
     input.focus();
     input.select();
 
     copyText(url).then(function (ok) {
       setShareMsg(
         ok
-          ? "リンクをコピーしました。メールやLINEなどで共有してください。"
-          : "下のリンクをコピーして共有してください。"
+          ? "リンクをコピーしました。メールやLINEなどで共有してください。スマホは下のQRコードでも開けます。"
+          : "下のリンクをコピーして共有してください。スマホは下のQRコードでも開けます。"
       );
     });
+  }
+
+  // 共有URLのQRコードを描画（生成できない場合は非表示にしてリンクだけ使う）
+  function renderShareQr(url) {
+    var wrap = document.getElementById("shareQr");
+    var box = document.getElementById("shareQrBox");
+    if (!wrap || !box) return;
+    try {
+      if (typeof qrcode !== "function") throw new Error("qrcode library not loaded");
+      var qr = qrcode(0, "L"); // 0=自動サイズ, L=誤り訂正レベル（データを詰めやすい）
+      qr.addData(url);
+      qr.make();
+      box.innerHTML = qr.createSvgTag({ cellSize: 4, margin: 2 });
+      wrap.hidden = false;
+    } catch (e) {
+      box.innerHTML = "";
+      wrap.hidden = true; // データが大きすぎる等で作れない場合はリンクのみ
+    }
   }
 
   function copyText(text) {

@@ -80,6 +80,10 @@
           <input type="text" id="shareUrl" readonly />
           <button class="btn small" id="copyShareBtn">コピー</button>
         </div>
+        <div class="share-qr" id="shareQr" hidden>
+          <p class="qr-caption">スマホのカメラで読み取ると、そのまま開けます</p>
+          <div class="qr-box" id="shareQrBox"></div>
+        </div>
         <p class="hint">このリンクを開くと、今の順位結果が表示されます（作成時点のスナップショット）。スコアを更新したら、リンクを作り直して共有してください。</p>
       </div>
       <p class="hint">データはこの端末のブラウザ内（localStorage）に自動保存されます。通信は行いません。</p>
@@ -90,6 +94,7 @@
     <span id="saveStatus">自動保存: 準備中</span>
   </footer>
 
+  <script src="qrcode.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
