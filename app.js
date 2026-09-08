@@ -460,7 +460,7 @@
     container.appendChild(buildIndividualTable(result.entries));
   }
 
-  // 各プレイヤーのグロス順位・ネット順位を一覧表示する
+  // 各プレイヤーを、チーム戦と同じ基準（グロス順位＋ネット順位の合算）で順位付けして一覧表示する
   function buildIndividualTable(entries) {
     var section = el("div", "individual");
 
@@ -468,14 +468,44 @@
     heading.textContent = "個人順位";
     section.appendChild(heading);
 
-    // グロス順位の昇順（未入力は末尾）、次いでネット順位で並べる
+    var hint = el("p", "hint");
+    hint.textContent =
+      "チーム戦と同じ基準で、各人の合算（グロス順位＋ネット順位）が小さい順に個人順位を付けます（同点はネット順位が上位）。";
+    section.appendChild(hint);
+
+    // 個人の合算 = グロス順位 + ネット順位（両方が確定している場合のみ）
+    entries.forEach(function (e) {
+      e.combined = e.grossRank != null && e.netRank != null ? e.grossRank + e.netRank : null;
+      e.indivRank = null;
+    });
+
+    // 合算で個人順位を付ける（同値は同順位）。同点の並びはネット順位→グロス順位。
+    var rankable = entries.filter(function (e) {
+      return e.combined != null;
+    });
+    rankable.sort(function (a, b) {
+      if (a.combined !== b.combined) return a.combined - b.combined;
+      if (a.netRank !== b.netRank) return a.netRank - b.netRank;
+      return a.grossRank - b.grossRank;
+    });
+    for (var i = 0; i < rankable.length; i++) {
+      if (i > 0 && rankable[i].combined === rankable[i - 1].combined) {
+        rankable[i].indivRank = rankable[i - 1].indivRank;
+      } else {
+        rankable[i].indivRank = i + 1;
+      }
+    }
+
+    // 表示順: 合算の昇順（未確定は末尾）→ ネット順位 → グロス順位
     var rankOr = function (v) {
       return v == null ? Infinity : v;
     };
     var sorted = entries.slice().sort(function (a, b) {
-      var d = rankOr(a.grossRank) - rankOr(b.grossRank);
+      var d = rankOr(a.combined) - rankOr(b.combined);
       if (d !== 0) return d;
-      return rankOr(a.netRank) - rankOr(b.netRank);
+      d = rankOr(a.netRank) - rankOr(b.netRank);
+      if (d !== 0) return d;
+      return rankOr(a.grossRank) - rankOr(b.grossRank);
     });
 
     var scroll = el("div", "table-scroll");
@@ -483,24 +513,30 @@
     table.className = "results-table";
     table.innerHTML =
       "<thead><tr>" +
+      "<th>個人順位</th>" +
       "<th>プレイヤー</th>" +
       "<th>チーム</th>" +
-      "<th>グロス</th>" +
-      "<th>グロス順位</th>" +
-      "<th>ネット</th>" +
-      "<th>ネット順位</th>" +
+      "<th>グロス（順位）</th>" +
+      "<th>ネット（順位）</th>" +
+      "<th>合算</th>" +
       "</tr></thead>";
     var tbody = document.createElement("tbody");
 
+    var withRank = function (score, rank) {
+      if (score == null) return "—";
+      return score + (rank == null ? "" : " (" + rank + ")");
+    };
+
     sorted.forEach(function (e) {
       var tr = document.createElement("tr");
+      if (e.indivRank === 1) tr.className = "champion";
       tr.innerHTML =
+        "<td>" + (e.indivRank == null ? "—" : e.indivRank) + "</td>" +
         "<td class='team-cell'>" + escapeHtml(e.name || "無名") + "</td>" +
         "<td>" + escapeHtml(e.team.name || "無名チーム") + "</td>" +
-        "<td>" + (e.gross == null ? "—" : e.gross) + "</td>" +
-        "<td>" + (e.grossRank == null ? "—" : e.grossRank) + "</td>" +
-        "<td>" + (e.net == null ? "—" : e.net) + "</td>" +
-        "<td>" + (e.netRank == null ? "—" : e.netRank) + "</td>";
+        "<td>" + withRank(e.gross, e.grossRank) + "</td>" +
+        "<td>" + withRank(e.net, e.netRank) + "</td>" +
+        "<td class='combined-cell'>" + (e.combined == null ? "—" : e.combined) + "</td>";
       tbody.appendChild(tr);
     });
 
